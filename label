@@ -72,3 +72,31 @@ submission.to_csv('submission.csv', index=False)
 print("预测结果已保存至 submission.csv")
 
 
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+# 假设测试集的特征数据和 id 已加载
+test_df = pd.read_csv('test_features.csv')  # 包含测试集的特征和 id 列
+test_ids = test_df['id']  # 提取测试集的 id 列
+
+# 假设 y_pred 是模型预测的数值标签
+y_pred = [0, 1, 2, 0, 1]  # 示例预测值
+
+# 使用 LabelEncoder 将数值标签转换回字符串标签
+le = LabelEncoder()
+le.fit(['setosa', 'versicolor', 'virginica'])  # 假设训练时的类别
+
+# 转换预测值为字符串标签
+y_pred_labels = le.inverse_transform(y_pred)
+
+# 创建保存的 DataFrame
+submission = pd.DataFrame({
+    'id': test_ids,           # 测试集的 id 列
+    'species': y_pred_labels  # 转换后的预测标签
+})
+
+# 保存为 CSV 文件
+submission.to_csv('submission.csv', index=False)
+
+print("预测结果已保存至 submission.csv")
+
